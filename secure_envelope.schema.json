@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/secure-hybrid-envelope.schema.json",
+  "title": "Secure Hybrid Signature Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "policy",
+    "digest",
+    "context",
+    "nonce",
+    "key_id",
+    "signature",
+    "algorithms",
+    "payload",
+    "created_at",
+    "encoding",
+    "key_state",
+    "binding"
+  ],
+  "properties": {
+    "version": {"const": 1},
+    "policy": {"type": "object", "additionalProperties": true},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "context": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "nonce": {"type": "string", "minLength": 24},
+    "key_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ed25519", "ml_dsa_44"],
+      "properties": {
+        "ed25519": {"type": "string", "minLength": 1},
+        "ml_dsa_44": {"type": "string", "minLength": 1}
+      }
+    },
+    "algorithms": {
+      "const": ["Ed25519", "ML-DSA-44"]
+    },
+    "payload": {"type": "string"},
+    "created_at": {"type": "integer", "minimum": 0},
+    "encoding": {"const": "JCS-like-json-utf8-v1"},
+    "key_state": {"const": "active"},
+    "binding": {"const": "AND"}
+  }
+}
